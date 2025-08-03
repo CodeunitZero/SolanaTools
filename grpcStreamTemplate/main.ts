@@ -20,8 +20,10 @@ const logStream = pretty({
 const logger = pino({ level: 'info' }, logStream);
 
 const GRPCENDPOINT = CONFIG.GRPC_URL;
-const COMMITMENT = CommitmentLevel.PROCESSED;
-const ACCOUNT = CONFIG.ACCOUNT;
+const COMMITMENT = CommitmentLevel.FINALIZED;
+const ACCOUNTS: string[] = [CONFIG.PUMPFUN_BONDING, CONFIG.RAYDIUM_LAUNCHPAD];
+
+
 
 
 let stream: ClientDuplexStream<SubscribeRequest, SubscribeUpdate>;
@@ -33,7 +35,7 @@ async function main(): Promise<void> {
 
     try {
         await sendSubscribeRequest(stream, request);
-        console.log(`Geyser connection established - watching account ${ACCOUNT} activity. \n`);
+        console.log(`Geyser connection established - watching account ${ACCOUNTS} activity. \n`);
         await handleStreamEvents(stream);
     } catch (error) {
         console.error('Error in subscription process:', error);
@@ -46,7 +48,7 @@ function createSubscribeRequest(): SubscribeRequest {
     return {
         accounts: {
             trackingWallet: {
-                account:[ACCOUNT],
+                account: ACCOUNTS,
                 owner: [],
                 filters: []            
             },
@@ -54,7 +56,7 @@ function createSubscribeRequest(): SubscribeRequest {
         slots: {},
         transactions: {
             masterWallet: {
-                accountInclude: [ACCOUNT],
+                accountInclude: ACCOUNTS,
                 accountExclude: [],
                 accountRequired: []
             }
