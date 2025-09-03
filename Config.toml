@@ -1,0 +1,7 @@
+# config.toml
+rust_log_level = "info"
+endpoint = "http://nl.grpc.asuga.io:10000"
+auth_token = "123456789"
+
+pump_fun_fee_account = "CebN5WGQ4jvEPvsVU4EoHEpgzq1VV7AbicfhtW4xC9iM"
+pump_fun_program = "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"
